@@ -1,0 +1,98 @@
+﻿
+@{
+    ViewBag.Title = "Weather";
+}
+
+
+
+<html>
+
+<head>
+
+    <script>
+
+
+        //data fetch ok
+
+        function weatherFunction() {
+
+
+            var jsonCities = new Array();
+
+            
+
+            $.getJSON('cities.json', function (data) {
+                jsonCities = data.List;
+            })
+
+                .done(function () {
+                    
+
+
+                    for (var i = 0; i < jsonCities.length; i++) {
+
+
+                        var cityname = jsonCities[i].CityName;
+
+                        //caching
+
+           
+
+
+                        if (cityname.length > 0) {
+
+
+                            $.ajax({
+                                url: "https://localhost:44396/Home/WeatherDetail?City=" + cityname,
+                                type: "GET",
+                                cache: false,
+                                success: function (rsltval) {
+                                    var data = JSON.parse(rsltval);
+
+
+                                    console.log(data);
+                                  
+
+                                    document.write(data.City + ' &nbsp');
+                                    document.write(data.Country + ' &nbsp');
+                                    document.write(data.Lat + ' &nbsp');
+                                    document.write(data.Lon + ' &nbsp');
+                                    document.write(data.Description + ' &nbsp');
+                                    document.write(data.Humidity + ' &nbsp');
+                                    document.write(data.TempFeelsLike + ' &nbsp');
+                                    document.write(data.Temp + ' &nbsp');
+                                    document.write(data.TempMax + ' &nbsp');
+                                    document.write(data.TempMin + ' &nbsp');
+                                    document.write('<img src="https://openweathermap.org/img/w/' + data.WeatherIcon + '.png"/><br>');
+
+                                },
+                                error: function () {
+                                     alert("An error occurred");
+                                }
+                            });
+
+
+
+
+                        }
+                        else {
+
+                        }
+
+                    }
+
+
+                });
+
+        }
+
+    </script>
+
+</head>
+
+<body onload="weatherFunction();">
+
+
+</body>
+</html>
+
